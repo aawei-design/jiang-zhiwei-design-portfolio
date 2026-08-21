@@ -84,8 +84,8 @@ const archiveItems = [
   { no: 'A02', title: '小米电视热度榜', type: '长图宣发', asset: '/portfolio/vip-archive-heat-ranking.png', long: true },
   { no: 'A03', title: '影视会员日-小红书', type: '社媒视觉', asset: '/portfolio/vip-archive-memberday-april.webp' },
   { no: 'A04', title: '影视会员日-小红书', type: '社媒视觉', asset: '/portfolio/vip-archive-memberday-july.webp' },
-  { no: 'A05', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-april-banner.gif' },
-  { no: 'A06', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-banner.gif' },
+  { no: 'A05', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-april-banner.mp4', media: 'video' },
+  { no: 'A06', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-banner.mp4', media: 'video' },
   { no: 'A10', title: 'HARRY WINSTON 创意开机', type: '电视端动态', asset: '/portfolio/motion/tv-harry-winston.mp4', media: 'video' },
   { no: 'A11', title: '斯凯奇创意开机', type: '电视端动态', asset: '/portfolio/motion/tv-skechers.mp4', media: 'video' },
   { no: 'A12', title: '美汁源大视界', type: '电视端动态', asset: '/portfolio/motion/tv-minutemaid.mp4', media: 'video' },
@@ -479,8 +479,8 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                     <figure><img src="/portfolio/vip-promo-xhs-618-2.webp" alt="618 小红书剧集评分活动物料" loading="lazy" /><figcaption>小红书 / 内容互动</figcaption></figure>
                   </div>
                   <div className="vip-promo-banner-pair">
-                    <figure><img src="/portfolio/vip-promo-618-banner.gif" alt="618 第三阶段动态 Banner" loading="lazy" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
-                    <figure><img src="/portfolio/vip-promo-may-banner.gif" alt="五一第三阶段动态 Banner" loading="lazy" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
+                    <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/vip-promo-618-banner.mp4" aria-label="618 第三阶段动态 Banner" autoPlay preload="metadata" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
+                    <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/vip-promo-may-banner.mp4" aria-label="五一第三阶段动态 Banner" autoPlay preload="metadata" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
                   </div>
                 </div>
               </section>

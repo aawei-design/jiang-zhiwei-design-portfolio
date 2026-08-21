@@ -19,16 +19,16 @@ const GROUPS = [
       ['vip-618-stage3.webp', '618 阶段三', 430],
       ['vip-promo-may-card.webp', '五月会员日宣发', 600],
       ['vip-promo-may-intro.webp', '五月宣发视觉', 500],
-      ['vip-promo-may-banner.gif', '五月动态 Banner', 400],
+      ['vip-promo-may-banner.mp4', '五月动态 Banner', 400, 'video'],
       ['vip-promo-618-intro.webp', '618 宣发视觉', 500],
       ['vip-promo-618-stage3-intro.webp', '618 冲刺视觉', 500],
-      ['vip-promo-618-banner.gif', '618 动态 Banner', 400],
+      ['vip-promo-618-banner.mp4', '618 动态 Banner', 400, 'video'],
       ['vip-promo-xhs-618-1.webp', '小红书 618 物料 01', 650],
       ['vip-promo-xhs-618-2.webp', '小红书 618 物料 02', 650],
       ['vip-archive-memberday-april.webp', '四月影视会员日', 650],
       ['vip-archive-memberday-july.webp', '七月影视会员日', 650],
-      ['vip-archive-memberday-april-banner.gif', '会员日动态条幅', 390],
-      ['vip-archive-memberday-banner.gif', '影视会员动态条幅', 390],
+      ['vip-archive-memberday-april-banner.mp4', '会员日动态条幅', 390, 'video'],
+      ['vip-archive-memberday-banner.mp4', '影视会员动态条幅', 390, 'video'],
       ['vip-archive-xhs-movie.webp', '小红书电影内容', 650],
       ['vip-archive-xhs-tv.webp', '小红书剧集内容', 650],
       ['vip-archive-xhs-variety.webp', '小红书综艺内容', 650],
@@ -137,7 +137,7 @@ export default function MasonryPortfolio() {
     <section className="masonry-portfolio" aria-label="Masonry 作品墙">
       <div className="masonry-intro">
         <span>REACT BITS / MASONRY</span>
-        <p>图片、长图、GIF 与视频以同一套流式规则编排。点击作品可查看原始文件。</p>
+        <p>图片、长图、动态横幅与视频以同一套流式规则编排。点击作品可查看原始文件。</p>
         <b>{String(items.length).padStart(2, '0')} ITEMS</b>
       </div>
       <div className="masonry-filters" aria-label="筛选作品类别">
