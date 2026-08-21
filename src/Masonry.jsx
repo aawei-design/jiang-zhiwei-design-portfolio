@@ -5,6 +5,12 @@ import './Masonry.css'
 
 const COLUMN_QUERIES = ['(min-width:1500px)', '(min-width:1000px)', '(min-width:600px)', '(min-width:400px)']
 const COLUMN_VALUES = [5, 4, 3, 2]
+const MEDIA_CACHE_VERSION = '20260821-1'
+
+function withMediaVersion(src) {
+  if (typeof src !== 'string' || /^(?:blob:|data:)/.test(src)) return src
+  return `${src}${src.includes('?') ? '&' : '?'}v=${MEDIA_CACHE_VERSION}`
+}
 
 function useMedia(queries, values, defaultValue) {
   const get = () => {
@@ -44,6 +50,7 @@ function useMeasure() {
 function LazyVideo({ src, title }) {
   const ref = useRef(null)
   const [isNear, setIsNear] = useState(false)
+  const versionedSrc = withMediaVersion(src)
 
   useEffect(() => {
     if (!ref.current) return undefined
@@ -64,7 +71,7 @@ function LazyVideo({ src, title }) {
     <video
       ref={ref}
       className="masonry-media"
-      src={isNear ? src : undefined}
+      src={isNear ? versionedSrc : undefined}
       aria-label={title}
       muted
       loop

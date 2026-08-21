@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 
+const MEDIA_CACHE_VERSION = '20260821-1'
+
+function withMediaVersion(src) {
+  if (typeof src !== 'string' || /^(?:blob:|data:)/.test(src)) return src
+  return `${src}${src.includes('?') ? '&' : '?'}v=${MEDIA_CACHE_VERSION}`
+}
+
 function enqueueVideoLoad(start) {
   start(() => {})
   return () => {}
 }
 
 export default function ReliableVideo({ src, enabled = false, className = '', autoPlay = true, ...props }) {
+  const versionedSrc = withMediaVersion(src)
   const videoRef = useRef(null)
   const visibleRef = useRef(false)
   const requestedRef = useRef(false)
@@ -71,12 +79,12 @@ export default function ReliableVideo({ src, enabled = false, className = '', au
       if (retryTimerRef.current !== null) window.clearTimeout(retryTimerRef.current)
       if (stallTimerRef.current !== null) window.clearTimeout(stallTimerRef.current)
     }
-  }, [enabled, src])
+  }, [enabled, versionedSrc])
 
   useEffect(() => {
     if (!enabled || !shouldLoad || !videoRef.current) return
     videoRef.current.load()
-  }, [enabled, shouldLoad, src])
+  }, [enabled, shouldLoad, versionedSrc])
 
   const handleLoadedData = () => {
     setIsReady(true)
@@ -112,7 +120,7 @@ export default function ReliableVideo({ src, enabled = false, className = '', au
       {...props}
       ref={videoRef}
       className={`${className} reliable-video${isReady ? ' is-video-ready' : ''}`.trim()}
-      src={shouldLoad ? src : undefined}
+      src={shouldLoad ? versionedSrc : undefined}
       muted
       loop
       playsInline
