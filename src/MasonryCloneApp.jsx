@@ -6,7 +6,7 @@ import Dock from './Dock.jsx'
 import LiquidEther from './LiquidEther.jsx'
 import MediaLightbox from './MediaLightbox.jsx'
 
-const MEDIA_SELECTOR = 'main img:not(.pc-avatar):not([src^="/logos/"]), main video'
+const MEDIA_SELECTOR = 'main img:not(.pc-avatar):not([src*="/logos/"]), main video'
 const LONG_IMAGE_SELECTOR = '.vip-promo-long-story img, .archive-item--long-scroll img'
 const LONG_SCROLL_SELECTOR = [
   '.vip-promo-long-grid figure',
