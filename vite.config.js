@@ -12,7 +12,7 @@ export default defineConfig({
         if (!/\.[cm]?[jt]sx?$/.test(id)) return null
 
         const transformed = code.replace(
-          /(["'`])\/(portfolio|assets|icons)\//g,
+          /(["'`])\/(portfolio|assets|hero|icons|logos)\//g,
           '$1./$2/',
         )
 

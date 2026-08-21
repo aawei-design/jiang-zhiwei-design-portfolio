@@ -8,7 +8,7 @@
 
 .masonry-effects-version .work img.project-visual,
 .masonry-effects-version .work video.project-visual,
-.masonry-effects-version .casebook img:not([src^="/logos/"]),
+.masonry-effects-version .casebook img:not([src*="/logos/"]),
 .masonry-effects-version .casebook video {
   cursor: zoom-in;
 }

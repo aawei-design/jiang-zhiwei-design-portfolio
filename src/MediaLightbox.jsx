@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 const MEDIA_SELECTOR = [
   '.work img.project-visual',
   '.work video.project-visual',
-  '.casebook img:not([src^="/logos/"])',
+  '.casebook img:not([src*="/logos/"])',
   '.casebook video',
 ].join(', ')
 
