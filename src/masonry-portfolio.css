@@ -1,0 +1,19 @@
+.masonry-portfolio { margin-top: 14px; }
+.masonry-intro { display: grid; grid-template-columns: 170px minmax(0,1fr) auto; gap: 40px; align-items: start; padding: 23px 0 28px; border-top: 1px solid rgba(255,255,255,.18); border-bottom: 1px solid rgba(255,255,255,.18); }
+.masonry-intro span, .masonry-intro b { color: var(--orange); font-size: 10px; letter-spacing: .15em; font-weight: 500; }
+.masonry-intro p { max-width: 620px; margin: 0; color: rgba(255,255,255,.52); font-size: 12px; line-height: 1.8; }
+.masonry-intro b { color: rgba(255,255,255,.62); }
+.masonry-filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 22px 0 19px; }
+.masonry-filters button { padding: 9px 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: rgba(255,255,255,.55); background: transparent; font-size: 9px; letter-spacing: .1em; cursor: pointer; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+.masonry-filters button:hover, .masonry-filters button.is-active { color: #111; border-color: #fff; background: #fff; }
+
+@media (max-width: 760px) {
+  .masonry-intro { grid-template-columns: 1fr auto; gap: 18px; }
+  .masonry-intro p { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (max-width: 520px) {
+  .masonry-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .masonry-filters::-webkit-scrollbar { display: none; }
+  .masonry-filters button { flex: 0 0 auto; }
+}

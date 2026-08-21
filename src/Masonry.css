@@ -1,0 +1,69 @@
+.masonry-list {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  transition: height .5s cubic-bezier(.2,.75,.2,1);
+}
+
+.masonry-item-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 7px;
+  opacity: 0;
+  cursor: pointer;
+  transform-origin: center;
+  will-change: transform, width, height, opacity, filter;
+}
+
+.masonry-item-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  background: #121212;
+  box-shadow: 0 18px 55px -24px rgba(0,0,0,.8);
+}
+
+.masonry-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #080808;
+  transition: transform .6s cubic-bezier(.2,.8,.2,1), filter .4s ease;
+}
+
+.masonry-item-wrapper:hover .masonry-media { transform: scale(1.035); }
+.masonry-item-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 48%, rgba(0,0,0,.84)); pointer-events: none; }
+.color-overlay { position: absolute; inset: 0; opacity: 0; pointer-events: none; background: linear-gradient(45deg, rgba(255,0,150,.5), rgba(0,150,255,.5)); }
+
+.masonry-item-media footer {
+  position: absolute;
+  z-index: 2;
+  right: 17px;
+  bottom: 16px;
+  left: 17px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 18px;
+  align-items: end;
+  color: #fff;
+}
+
+.masonry-item-media footer small { grid-column: 1 / -1; color: rgba(255,255,255,.58); font-size: 8px; letter-spacing: .16em; }
+.masonry-item-media footer strong { overflow: hidden; font-size: 14px; font-weight: 500; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.masonry-item-media footer span { color: rgba(255,255,255,.48); font-size: 9px; letter-spacing: .1em; }
+.masonry-play { position: absolute; z-index: 2; top: 15px; right: 15px; padding: 6px 9px; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; color: rgba(255,255,255,.78); background: rgba(0,0,0,.3); backdrop-filter: blur(10px); font-size: 8px; letter-spacing: .14em; }
+
+@media (max-width: 600px) {
+  .masonry-item-wrapper { padding: 5px; }
+  .masonry-item-media footer { right: 12px; bottom: 12px; left: 12px; }
+  .masonry-item-media footer strong { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masonry-list, .masonry-media { transition: none; }
+}

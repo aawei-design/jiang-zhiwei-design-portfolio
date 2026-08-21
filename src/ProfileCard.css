@@ -1,0 +1,82 @@
+.pc-card-wrapper {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: .5;
+  --pointer-from-left: .5;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --card-opacity: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 500px;
+  transform: translate3d(0,0,.1px);
+  touch-action: none;
+}
+
+.pc-behind {
+  position: absolute;
+  z-index: 0;
+  inset: -8%;
+  border-radius: 14px;
+  background: radial-gradient(circle at var(--pointer-x) var(--pointer-y),var(--behind-glow-color) 0,transparent var(--behind-glow-size));
+  filter: blur(34px) saturate(1.1);
+  opacity: calc(.75 * var(--card-opacity));
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.pc-card-wrapper.is-active,
+.pc-card-wrapper.is-initial { --card-opacity: 1; }
+
+.pc-card-shell { position: relative; z-index: 1; width: 100%; height: 100%; }
+
+.pc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  background: #111;
+  box-shadow: rgba(0,0,0,.7) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 22px -6px;
+  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform .8s ease;
+}
+
+.pc-card-wrapper.is-active .pc-card,
+.pc-card-wrapper.is-initial .pc-card {
+  transform: translateZ(0) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+  transition: transform 120ms ease-out;
+}
+
+.pc-inside { position: absolute; inset: 0; overflow: hidden; background: var(--inner-gradient),#111; }
+.pc-avatar { position: absolute; z-index: 1; inset: -1%; width: 102%; height: 102%; max-width: none; object-fit: cover; object-position: center top; backface-visibility: hidden; transform: translate3d(calc((var(--pointer-from-left) - .5) * 6px),calc((var(--pointer-from-top) - .5) * 5px),1px) scale(1.015); transition: transform 120ms ease-out; }
+
+.pc-shine,
+.pc-glare { position: absolute; inset: 0; pointer-events: none; opacity: calc(var(--card-opacity) * .62); transition: opacity .35s ease; }
+
+.pc-shine {
+  z-index: 2;
+  background-image:
+    repeating-linear-gradient(0deg,#ff8989 5%,#ffe86e 10%,#a8ff7b 15%,#83fff2 20%,#809bff 25%,#e78aff 30%,#ff8989 35%),
+    repeating-linear-gradient(-45deg,#0e152e 0%,#9ca9a9 4.5%,#0e152e 10%,#0e152e 12%),
+    radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),rgba(255,255,255,.4),rgba(0,0,0,.26) 80%);
+  background-position: 0 var(--background-y),var(--background-x) var(--background-y),center;
+  background-size: 500% 500%,300% 300%,200% 200%;
+  background-blend-mode: color,hard-light;
+  mix-blend-mode: color-dodge;
+  filter: brightness(.76) contrast(1.35) saturate(.55);
+}
+
+.pc-glare { z-index: 3; background: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),rgba(239,235,255,.48) 0%,rgba(28,62,110,.18) 52%,transparent 90%); mix-blend-mode: overlay; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-card, .pc-avatar { transform: none !important; transition: none; }
+  .pc-shine, .pc-glare, .pc-behind { display: none; }
+}
