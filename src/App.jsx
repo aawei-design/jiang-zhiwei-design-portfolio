@@ -22,29 +22,28 @@ const MediaViewHint = ({ kind = 'image', className = '' }) => (
 )
 
 const heroTileSources = [
-  '/hero/weekend-cinema.webp',
-  '/hero/618-stage2.webp',
-  '/hero/weekend-year.webp',
-  '/hero/618-buy.webp',
-  '/hero/weekend-lottery.webp',
-  '/hero/618-stage3.webp',
-  '/hero/weekend-purple.webp',
-  '/hero/618-content.webp',
-  '/hero/weekend-vip.webp',
-  '/hero/618-final.webp',
-  '/hero/618-benefit.webp',
-  '/hero/618-coupon.webp',
-  '/hero/618-stage3-small.webp',
-  '/hero/618-stage4.webp',
-  '/hero/618-countdown.webp',
-  '/hero/weekend-content.webp',
-  '/hero/weekend-premium.webp',
-  '/hero/weekend-lottery-last.webp',
-  '/hero/weekend-gift-last.webp',
-  '/hero/weekend-purple-last.webp',
+  '/previews/hero/weekend-cinema.webp.webp',
+  '/previews/hero/618-stage2.webp.webp',
+  '/previews/hero/weekend-year.webp.webp',
+  '/previews/hero/618-buy.webp.webp',
+  '/previews/hero/weekend-lottery.webp.webp',
+  '/previews/hero/618-stage3.webp.webp',
+  '/previews/hero/weekend-purple.webp.webp',
+  '/previews/hero/618-content.webp.webp',
+  '/previews/hero/weekend-vip.webp.webp',
+  '/previews/hero/618-final.webp.webp',
+  '/previews/hero/618-benefit.webp.webp',
+  '/previews/hero/618-coupon.webp.webp',
+  '/previews/hero/618-stage3-small.webp.webp',
+  '/previews/hero/618-stage4.webp.webp',
+  '/previews/hero/618-countdown.webp.webp',
+  '/previews/hero/weekend-content.webp.webp',
+  '/previews/hero/weekend-premium.webp.webp',
+  '/previews/hero/weekend-lottery-last.webp.webp',
+  '/previews/hero/weekend-gift-last.webp.webp',
+  '/previews/hero/weekend-purple-last.webp.webp',
 ]
 
-const animatedHeroIndexes = new Set([0, 1, 4, 5, 8, 11])
 const heroStillSources = [
   '/previews/hero-still/weekend-cinema.webp',
   '/previews/hero-still/618-stage2.webp',
@@ -71,7 +70,6 @@ const heroStillSources = [
 const heroTiles = heroTileSources.map((animated, index) => ({
   animated,
   still: heroStillSources[index],
-  animate: animatedHeroIndexes.has(index),
 }))
 
 const projects = [
@@ -137,8 +135,8 @@ const archiveItems = [
   { no: 'A02', title: '小米电视热度榜', type: '长图宣发', asset: '/portfolio/vip-archive-heat-ranking.png', long: true },
   { no: 'A03', title: '影视会员日-小红书', type: '社媒视觉', asset: '/portfolio/vip-archive-memberday-april.webp' },
   { no: 'A04', title: '影视会员日-小红书', type: '社媒视觉', asset: '/portfolio/vip-archive-memberday-july.webp' },
-  { no: 'A05', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-april-banner.mp4', media: 'video' },
-  { no: 'A06', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-banner.mp4', media: 'video' },
+  { no: 'A05', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-april-banner.webp' },
+  { no: 'A06', title: '影视会员日-公众号 Banner', type: '动态 Banner', asset: '/portfolio/vip-archive-memberday-banner.webp' },
   { no: 'A10', title: 'HARRY WINSTON 创意开机', type: '电视端动态', asset: '/portfolio/motion/tv-harry-winston.mp4', media: 'video' },
   { no: 'A11', title: '斯凯奇创意开机', type: '电视端动态', asset: '/portfolio/motion/tv-skechers.mp4', media: 'video' },
   { no: 'A12', title: '美汁源大视界', type: '电视端动态', asset: '/portfolio/motion/tv-minutemaid.mp4', media: 'video' },
@@ -287,7 +285,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
           <div className="hero-mosaic" aria-hidden="true">
             {heroTiles.map((tile, index) => (
               <figure className="hero-tile" key={`${tile.animated}-${index}`} style={{ '--tile-image': `url(${tile.still})` }}>
-                <img src={tile.animate ? tile.animated : tile.still} alt="" loading="eager" decoding="async" fetchPriority={tile.animate ? 'auto' : 'low'} />
+                <img src={tile.animated} alt="" loading="eager" decoding="async" fetchPriority={index < 5 ? 'high' : 'low'} />
               </figure>
             ))}
           </div>
@@ -571,8 +569,8 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                     <figure><img src="/portfolio/vip-promo-xhs-618-2.webp" alt="618 小红书剧集评分活动物料" loading="lazy" /><figcaption>小红书 / 内容互动</figcaption></figure>
                   </div>
                   <div className="vip-promo-banner-pair">
-                    <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/vip-promo-618-banner.mp4" aria-label="618 第三阶段动态 Banner" autoPlay preload="metadata" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
-                    <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/vip-promo-may-banner.mp4" aria-label="五一第三阶段动态 Banner" autoPlay preload="metadata" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
+                    <figure><img src="/portfolio/vip-promo-618-banner.webp" alt="618 第三阶段动态 Banner" loading="lazy" decoding="async" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
+                    <figure><img src="/portfolio/vip-promo-may-banner.webp" alt="五一第三阶段动态 Banner" loading="lazy" decoding="async" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
                   </div>
                 </div>
               </section>
