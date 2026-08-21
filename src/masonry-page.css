@@ -391,7 +391,7 @@
   }
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1050px) and (min-width: 2000px) {
   .masonry-effects-version .nav-links {
     gap: 18px;
   }
@@ -424,7 +424,7 @@
   max-width: 100%;
   align-items: center;
   gap: 9px;
-  margin: -30px 0 28px auto;
+  margin: 22px 0 30px auto;
   padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, .13);
   border-radius: 999px;
@@ -442,13 +442,52 @@
   line-height: 1;
 }
 
-.masonry-effects-version .work .project-media-hint {
-  margin-top: -24px;
+.masonry-effects-version .project-media-hint--before-media {
+  margin-top: 26px;
+  margin-bottom: 32px;
 }
 
-.masonry-effects-version .archive > .project-media-hint {
-  margin-top: -46px;
+.masonry-effects-version .project-media-hint--after-media {
+  margin-top: 28px;
+  margin-bottom: 52px;
+}
+
+.masonry-effects-version .project-media-hint--motion-mobile {
+  margin-top: 30px;
+  margin-bottom: 38px;
+}
+
+.masonry-effects-version .project-media-hint--case {
+  margin-top: -34px;
   margin-bottom: 34px;
+}
+
+.masonry-effects-version .archive > .project-media-hint--archive {
+  margin-top: -48px;
+  margin-bottom: 36px;
+}
+
+.masonry-effects-version .key-marketing-module {
+  margin-top: 88px;
+  padding-top: 78px;
+}
+
+.masonry-effects-version .key-marketing-heading {
+  position: relative;
+}
+
+.masonry-effects-version .key-marketing-heading .project-media-hint--key-marketing {
+  grid-column: 3;
+  justify-self: end;
+  margin: 18px 0 -20px;
+}
+
+.masonry-effects-version .motion-terminal--tv .project-media-hint--after-media {
+  margin-bottom: 14px;
+}
+
+.masonry-effects-version .motion-terminal--mobile .project-media-hint--after-media {
+  margin-bottom: 0;
 }
 
 .masonry-effects-version .mobile-case-switcher {
@@ -487,7 +526,7 @@
   border-radius: 8px;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 720px) and (min-width: 2000px) {
   html,
   body {
     overflow-x: clip;

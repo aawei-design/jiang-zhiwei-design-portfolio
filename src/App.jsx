@@ -8,10 +8,16 @@ const Arrow = ({ diagonal = false }) => (
   </svg>
 )
 
-const MediaViewHint = ({ long = false }) => (
-  <p className="project-media-hint">
+const mediaHintCopy = {
+  image: '点击图片可放大查看',
+  video: '点击视频可放大查看',
+  both: '点击图片和视频可放大查看',
+}
+
+const MediaViewHint = ({ kind = 'image', className = '' }) => (
+  <p className={`project-media-hint ${className}`.trim()}>
     <span aria-hidden="true">⤢</span>
-    {long ? '点击长图放大，上下滚动查看完整内容' : '点击项目图片或视频可放大查看'}
+    {mediaHintCopy[kind]}
   </p>
 )
 
@@ -38,7 +44,35 @@ const heroTileSources = [
   '/hero/weekend-purple-last.webp',
 ]
 
-const heroTiles = heroTileSources
+const animatedHeroIndexes = new Set([0, 1, 4, 5, 8, 11])
+const heroStillSources = [
+  '/previews/hero-still/weekend-cinema.webp',
+  '/previews/hero-still/618-stage2.webp',
+  '/previews/hero-still/weekend-year.webp',
+  '/previews/hero-still/618-buy.webp',
+  '/previews/hero-still/weekend-lottery.webp',
+  '/previews/hero-still/618-stage3.webp',
+  '/previews/hero-still/weekend-purple.webp',
+  '/previews/hero-still/618-content.webp',
+  '/previews/hero-still/weekend-vip.webp',
+  '/previews/hero-still/618-final.webp',
+  '/previews/hero-still/618-benefit.webp',
+  '/previews/hero-still/618-coupon.webp',
+  '/previews/hero-still/618-stage3-small.webp',
+  '/previews/hero-still/618-stage4.webp',
+  '/previews/hero-still/618-countdown.webp',
+  '/previews/hero-still/weekend-content.webp',
+  '/previews/hero-still/weekend-premium.webp',
+  '/previews/hero-still/weekend-lottery-last.webp',
+  '/previews/hero-still/weekend-gift-last.webp',
+  '/previews/hero-still/weekend-purple-last.webp',
+]
+
+const heroTiles = heroTileSources.map((animated, index) => ({
+  animated,
+  still: heroStillSources[index],
+  animate: animatedHeroIndexes.has(index),
+}))
 
 const projects = [
   {
@@ -252,8 +286,8 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
         <section className="hero" id="top">
           <div className="hero-mosaic" aria-hidden="true">
             {heroTiles.map((tile, index) => (
-              <figure className="hero-tile" key={`${tile}-${index}`} style={{ '--tile-image': `url(${tile})` }}>
-                <img src={tile} alt="" loading="lazy" decoding="async" fetchPriority="low" />
+              <figure className="hero-tile" key={`${tile.animated}-${index}`} style={{ '--tile-image': `url(${tile.still})` }}>
+                <img src={tile.animate ? tile.animated : tile.still} alt="" loading="eager" decoding="async" fetchPriority={tile.animate ? 'auto' : 'low'} />
               </figure>
             ))}
           </div>
@@ -330,7 +364,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
           <div className="frame">
             <div className="section-kicker section-kicker--light" data-reveal><span>02</span><p>SELECTED WORK / 2024—2026</p></div>
             <div className="work-heading" data-reveal><h2>关键工作<br /><em>产出。</em></h2><p>从营销视觉、IP 设计到动态与工具创新，<br />在不同屏幕与场景中让设计产生价值。</p></div>
-            <MediaViewHint />
             <div className="projects">
               {projects.map((project) => (
                 <article className={project.className} key={project.id} data-reveal>
@@ -375,8 +408,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米影视VIP<br /><em>宣发与重点营销</em></h2>
                 <p>从微信公众号、小红书、微博日常宣发，到春节和 618 大促，统一品牌与营销表达。</p>
               </header>
-              <MediaViewHint long />
-
               <figure className="case-cover real-cover" data-reveal>
                 <img src="/portfolio/vip-cover.webp" alt="小米影视VIP 周末活动电视端资源位" loading="lazy" />
                 <figcaption><span>WEEKEND CAMPAIGN / OTT</span><p>围绕剧集内容与年卡权益建立主题化视觉，让促销信息融入观看场景。</p></figcaption>
@@ -480,8 +511,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米影视VIP<br /><em>增值运营设计</em></h2>
                 <p>围绕 618 与五一档期，完成从内容介绍、公众号长图到小红书和动态 Banner 的连续传播，让每次内容更新拥有清晰、统一的观看入口。</p>
               </header>
-              <MediaViewHint long />
-
               <div className="case-facts vip-promo-facts" data-reveal>
                 <div><span>工作内容</span><p>内容选题、视觉主张、长图排版与多渠道延展。</p></div>
                 <div><span>核心场景</span><p>{enhancedContent ? '新媒体宣发 / 大促活动 / 日常会员内容推荐。' : '618 年中大促 / 五一假期 / 日常会员内容推荐。'}</p></div>
@@ -507,6 +536,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                   <h3>{enhancedContent ? '把复杂营销活动，' : '把复杂信息，'}<br /><em>组织成更想读下去的长图。</em></h3>
                   <p>围绕 618 与五一档期，用权益、内容与行动入口建立清晰阅读节奏。强吸引的首屏与连续的内容编排，让用户更愿意停留、了解会员价值，并为增值营销提供稳定的转化支持。</p>
                 </header>
+                <MediaViewHint className="project-media-hint--before-media" />
                 <div className="vip-promo-long-stories">
                   <article className="vip-promo-long-story">
                     <div className="vip-promo-long-copy"><span>618 / LONG SCROLL</span><h4>用一条长图，<br />串起年中大促的观看理由。</h4><p>从年卡权益、赠礼机制到热播内容，信息由强利益点进入，再逐步展开内容价值与行动入口。读者可以沿着一条明确路径完成理解与决策。</p><small>权益说明 · 内容片单 · 活动入口</small></div>
@@ -534,6 +564,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                   <h3>一套内容，<br /><em>在不同触点继续发生。</em></h3>
                   <p>将长图中的核心利益点重新组合为适合社媒浏览的单张内容，同时通过动态 Banner 在站内完成高频、轻量的活动提醒；画面统一，但每种媒介都保留自己的阅读节奏。</p>
                 </header>
+                <MediaViewHint className="project-media-hint--before-media" />
                 <div className="vip-promo-extension-grid">
                   <div className="vip-promo-social-pair">
                     <figure><img src="/portfolio/vip-promo-xhs-618-1.webp" alt="618 小红书会员权益活动物料" loading="lazy" /><figcaption>小红书 / 互动福利</figcaption></figure>
@@ -558,6 +589,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                   <h3>把 11.11 的<br /><em>促销感带进每个入口。</em></h3>
                   <p>围绕京东 11.11 补贴主题，针对全搜、内容中心、浏览器与负一屏等不同信息入口，完成高识别的多尺寸视觉延展。</p>
                 </header>
+                <MediaViewHint className="project-media-hint--before-media" />
                 {enhancedContent && <h4 className="jd-promo-board-title">手机浮层广告</h4>}
                 <div className="jd-promo-board">
                   <figure className="jd-promo-main"><img src="/portfolio/jd-search-card.png" alt="京东十一点一浮层主视觉" loading="lazy" /><figcaption><span>浮层主视觉</span><b>用高识别利益点先完成注意力聚焦</b></figcaption></figure>
@@ -584,6 +616,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                   <span>{enhancedContent ? '1.4 / KEY MARKETING · 2026' : '1.5 / KEY MARKETING · 2026'}</span>
                   <h3>重点营销，<br /><em>转化增长。</em></h3>
                   <p>围绕综艺热点与暑期观影福利，将会员权益、竞猜互动、节目内容与抽奖任务编排为连续的活动体验。</p>
+                  <MediaViewHint className="project-media-hint--key-marketing" />
                 </header>
                 <div className="key-marketing-lottery">
                   <header><span>01 / SUMMER LOTTERY</span><h4>暑期抽奖，连接<br />会员与内容福利。</h4><p>不同奖品与内容权益组合为轻量的参与任务，丰富活动节奏，同时让画面保持完整的暑期氛围。</p></header>
@@ -616,8 +649,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>Mihome IP<br /><em>形象与视觉体系</em></h2>
                 <p>{enhancedContent ? '以“三代同屏、六类内容场景”为结构，建立 Mihome Family 家庭角色体系，让电视内容服务拥有更亲切、更可持续的品牌人格，也代表用户可以获得更沉浸式的内容体验。' : '以“三代同屏、六类内容场景”为结构，建立 Mihome Family 家庭角色体系，让电视内容服务拥有更亲切、更可持续的品牌人格。'}</p>
               </header>
-              <MediaViewHint long />
-
               <figure className="case-cover case-cover--mihome real-cover" data-reveal><img src="/portfolio/mihome-cover.webp" alt="Mihome Family 家庭角色系统主视觉" loading="lazy" /><figcaption><span>MIHOME FAMILY / 2026 VERSION</span><p>Home begins in everyone’s own scene.</p></figcaption></figure>
 
               <div className="case-facts" data-reveal>
@@ -632,6 +663,8 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <div className="chapter-copy"><p>角色统一使用三头身比例、圆形体块和柔软织物材质，保证安全、亲切与大屏可读性；再通过发型、眼镜、胡须和成员专属色形成差异，让六位人物既像一家人，又能分别代表内容偏好。</p></div>
               </section>
 
+              <MediaViewHint className="project-media-hint--before-media" />
+
               <div className="ip-system ip-system--real" data-reveal>
                 <figure><img src="/portfolio/mihome-family.webp" alt="Mihome 六位家庭成员角色设定" loading="lazy" /><figcaption><span>CHARACTER FAMILY</span><p>六位角色 · 三代家庭 · 六类内容偏好</p></figcaption></figure>
                 <figure><img src="/portfolio/mihome-system.webp" alt="Mihome 角色比例材质与识别系统" loading="lazy" /><figcaption><span>DESIGN SYSTEM</span><p>比例、材质、表情与差异化识别规则</p></figcaption></figure>
@@ -641,12 +674,12 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <div className="ip-applications">
                   <div className="ip-app-scroll-card ip-app-scroll-card--festival">
                     <figure className="ip-app ip-app--real ip-app--festival ip-app--scrollable"><img src="/portfolio/mihome-scenes.webp" alt="Mihome 家庭角色在娱乐教育生活场景中的应用" loading="lazy" /></figure>
-                    <p className="ip-scroll-hint"><b>角色场景与节日大屏应用</b><span>向下滚动查看完整长图 ↓</span></p>
+                    <p className="ip-scroll-hint"><b>角色场景与节日大屏应用</b></p>
                   </div>
                   <div className="mihome-intro-aside">
                     <div className="ip-app-scroll-card">
                       <figure className="ip-app ip-app--real ip-app--scrollable"><img src="/portfolio/mihome-newyear.webp" alt="Mihome Family 春节大屏营销应用" loading="lazy" /></figure>
-                      <p className="ip-scroll-hint"><b>春节大屏营销场景</b><span>向下滚动查看完整长图 ↓</span></p>
+                      <p className="ip-scroll-hint"><b>春节大屏营销场景</b></p>
                     </div>
                     <div className="mihome-intro-note">
                       <span>视觉触点系统</span>
@@ -662,6 +695,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 </header>
               </section>
 
+              <MediaViewHint className="project-media-hint--before-media" />
               <section className="mihome-real-applications" data-reveal>
                 <div className="mihome-app-pages">
                   <section className="mihome-app-page">
@@ -706,8 +740,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米电视与 App<br /><em>活动动态视觉</em></h2>
                 <p>围绕大屏开机、手机开屏与资源位广告，以动态节奏、画面转场和视觉特效快速聚焦注意力，让品牌卖点在有限曝光时间内更直观地被理解和记住。</p>
               </header>
-              <MediaViewHint />
-
               <section className="motion-reel" data-reveal>
                 <section className="motion-terminal motion-terminal--tv">
                   <header><span>2.1 / TV TERMINAL</span><h4>电视端创意开机</h4><p>结合视觉特效、三维与 AIGC 动态制作，将产品卖点和品牌氛围转化为具有节奏的开机广告，提升首帧吸引力与信息记忆。</p></header>
@@ -719,20 +751,24 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/tv-mead-johnson.mp4" autoPlay preload="metadata" /><figcaption>美赞臣广告</figcaption></figure>
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/tv-wahaha.mp4" autoPlay preload="metadata" /><figcaption>{enhancedContent ? '娃哈哈冰红茶广告' : '娃哈哈冰红茶'}</figcaption></figure>
                   </div>
+                  <MediaViewHint kind="video" className="project-media-hint--after-media" />
                   <div className="motion-tv-result"><span>2025 年下半年 · 创意开机项目收入</span><strong>{enhancedContent ? <><span>¥500<span className="metric-accent">W</span></span><sup>+</sup></> : <>¥500<sup>W+</sup></>}</strong><p>创意开机项目创收</p></div>
                 </section>
 
                 <section className="motion-terminal motion-terminal--mobile">
                   <header><span>2.2 / 手机端开屏</span><h4>手机端品牌开屏</h4><p>通过三维制作、环境特效与开屏动效强化画面冲击，在更小的屏幕中快速建立品牌记忆，并将用户注意力引向核心行动。</p></header>
+                  <MediaViewHint kind="video" className="project-media-hint--before-media project-media-hint--motion-mobile" />
                   <div className="motion-mobile-grid">
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/mobile-airchina.mp4" autoPlay preload="metadata" /><figcaption><span>国航开屏</span><b>品牌首帧</b></figcaption></figure>
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/mobile-rain.mp4" autoPlay preload="metadata" /><figcaption><span>下雨动画</span><b>环境状态动效</b></figcaption></figure>
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/mobile-wind.mp4" autoPlay preload="metadata" /><figcaption><span>大风动画</span><b>环境状态动效</b></figcaption></figure>
                   </div>
+                  <MediaViewHint kind="video" className="project-media-hint--after-media" />
                 </section>
 
                 <section className="motion-terminal motion-terminal--campaign">
                   <header><span>2.3 / CAMPAIGN MOTION</span><h4>活动资源位动态图</h4><p>把首页背景中使用的活动素材保留为动态展示，在案例中补充其在不同资源位中的节奏与信息层级。</p></header>
+                  <MediaViewHint className="project-media-hint--before-media" />
                   <div className="motion-campaign-grid">
                     <figure><img src="/hero/618-stage2.webp" alt="618 第二阶段资源位动态图" loading="lazy" /><figcaption>618 / 第二阶段</figcaption></figure>
                     <figure><img src="/hero/618-stage3.webp" alt="618 第三阶段资源位动态图" loading="lazy" /><figcaption>618 / 第三阶段</figcaption></figure>
@@ -818,7 +854,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>AI 工具化：让重复制作<br /><em>回到创意本身</em></h2>
                 <p>从设计稿中反复出现的找素材、对规格、换画框出发，将工作流收敛为「组件替换小助手」：在 Figma 内完成检索、定位与批量替换。</p>
               </header>
-              <MediaViewHint />
+              <MediaViewHint className="project-media-hint--case" />
 
               <section className="ai-tool-board" data-reveal>
                 <div className="ai-tool-overview">
@@ -851,7 +887,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
 
           <section className="archive frame" data-reveal>
             <header className="archive-header"><div><span>VISUAL ARCHIVE</span><b>2025—2026</b></div><h2>更多视觉产出<br /><em>与日常实践。</em></h2><p>从电视端资源位、品牌动态到节日场景，以下均来自本轮筛选后的真实工作文件。</p></header>
-            <MediaViewHint long />
+            <MediaViewHint kind="both" className="project-media-hint--archive" />
             <div className="archive-grid">
               {archiveItems.map((item, index) => {
                 const no = item.no || `A${String(index + 1).padStart(2, '0')}`

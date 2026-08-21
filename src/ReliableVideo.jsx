@@ -13,9 +13,31 @@ function posterFromSrc(src) {
   return match ? `/portfolio/motion/posters/${match[1]}.jpg?v=${MEDIA_CACHE_VERSION}` : undefined
 }
 
+const pendingVideoLoads = []
+let videoLoadTimer = null
+
+function flushVideoLoadQueue() {
+  videoLoadTimer = null
+  const next = pendingVideoLoads.shift()
+  if (!next) return
+  next.start(() => {})
+  if (pendingVideoLoads.length) videoLoadTimer = window.setTimeout(flushVideoLoadQueue, 140)
+}
+
 function enqueueVideoLoad(start) {
-  start(() => {})
-  return () => {}
+  const entry = { start }
+  pendingVideoLoads.push(entry)
+  if (videoLoadTimer === null) {
+    const begin = () => {
+      if (videoLoadTimer === null) videoLoadTimer = window.setTimeout(flushVideoLoadQueue, 0)
+    }
+    if ('requestIdleCallback' in window) window.requestIdleCallback(begin, { timeout: 900 })
+    else window.setTimeout(begin, 120)
+  }
+  return () => {
+    const index = pendingVideoLoads.indexOf(entry)
+    if (index >= 0) pendingVideoLoads.splice(index, 1)
+  }
 }
 
 export default function ReliableVideo({ src, enabled = false, className = '', autoPlay = true, poster, ...props }) {

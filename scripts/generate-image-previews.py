@@ -17,6 +17,10 @@ def preview_path(source: Path) -> Path:
     return PREVIEW_ROOT / Path(f"{relative.as_posix()}.webp")
 
 
+def hero_still_path(source: Path) -> Path:
+    return PREVIEW_ROOT / "hero-still" / source.name
+
+
 def target_width(source: Path, width: int, height: int, animated: bool) -> int:
     relative = source.relative_to(PUBLIC)
     if relative.parts[0] == "hero":
@@ -63,6 +67,16 @@ def convert(source: Path) -> tuple[int, int]:
                 method=4,
                 minimize_size=True,
             )
+            if source.relative_to(PUBLIC).parts[0] == "hero":
+                still_destination = hero_still_path(source)
+                still_destination.parent.mkdir(parents=True, exist_ok=True)
+                frames[0].save(
+                    still_destination,
+                    format="WEBP",
+                    quality=74,
+                    alpha_quality=82,
+                    method=5,
+                )
         else:
             rendered = ImageOps.exif_transpose(image)
             rendered = rendered.convert("RGBA" if rendered.mode in {"RGBA", "LA", "P"} else "RGB")
