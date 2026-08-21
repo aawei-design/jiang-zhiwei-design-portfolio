@@ -12,6 +12,21 @@ function isInViewport(element) {
   return rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth
 }
 
+function fullResolutionSrc(src) {
+  const url = new URL(src, document.baseURI)
+  const marker = ['', 'previews', ''].join('/')
+  const markerIndex = url.pathname.indexOf(marker)
+  if (markerIndex === -1 || !url.pathname.endsWith('.webp')) return url.href
+
+  url.pathname = `${url.pathname.slice(0, markerIndex)}/${url.pathname.slice(markerIndex + marker.length, -5)}`
+  return url.href
+}
+
+function isLongImage(element) {
+  if (element.closest('.vip-promo-long-story, .archive-item--long-scroll, .mihome-long-scrolls, .ip-app-scroll-card')) return true
+  return element.naturalWidth > 0 && element.naturalHeight / element.naturalWidth >= 2.2
+}
+
 export default function MediaLightbox() {
   const [media, setMedia] = useState(null)
   const pausedVideosRef = useRef([])
@@ -37,6 +52,8 @@ export default function MediaLightbox() {
       const target = event.target.closest?.('img, video')
       if (!target || !target.matches(MEDIA_SELECTOR)) return
 
+      event.preventDefault()
+
       previousFocusRef.current = document.activeElement
       pausedVideosRef.current = [...document.querySelectorAll('main video')]
       pausedVideosRef.current.forEach((video) => video.pause())
@@ -48,10 +65,13 @@ export default function MediaLightbox() {
           label: target.getAttribute('aria-label') || '作品视频',
         })
       } else {
+        const previewSrc = target.currentSrc || target.src
         setMedia({
           type: 'image',
-          src: target.currentSrc || target.src,
+          src: fullResolutionSrc(previewSrc),
+          previewSrc,
           label: target.alt || '作品图片',
+          long: isLongImage(target),
         })
       }
     }
@@ -93,7 +113,7 @@ export default function MediaLightbox() {
   return (
     <div
       ref={overlayRef}
-      className="media-lightbox"
+      className={`media-lightbox${media.long ? ' media-lightbox--long' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={`${media.label} · 点击返回`}
@@ -124,10 +144,16 @@ export default function MediaLightbox() {
             }}
           />
         ) : (
-          <img className="media-lightbox-content" src={media.src} alt={media.label} draggable={false} />
+          <img
+            className="media-lightbox-content"
+            src={media.src}
+            alt={media.label}
+            draggable={false}
+            style={{ backgroundImage: `url(${media.previewSrc})` }}
+          />
         )}
         <button className="media-lightbox-close" type="button" onClick={() => setMedia(null)} aria-label="关闭单独观看">×</button>
-        <span className="media-lightbox-hint">点击背景返回 · ESC</span>
+        <span className="media-lightbox-hint">{media.long ? '上下滚动查看完整长图 · 点击返回' : '点击背景返回 · ESC'}</span>
       </div>
     </div>
   )

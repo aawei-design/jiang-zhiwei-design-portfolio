@@ -8,6 +8,13 @@ const Arrow = ({ diagonal = false }) => (
   </svg>
 )
 
+const MediaViewHint = ({ long = false }) => (
+  <p className="project-media-hint">
+    <span aria-hidden="true">⤢</span>
+    {long ? '点击长图放大，上下滚动查看完整内容' : '点击项目图片或视频可放大查看'}
+  </p>
+)
+
 const heroTileSources = [
   '/hero/weekend-cinema.webp',
   '/hero/618-stage2.webp',
@@ -36,6 +43,7 @@ const heroTiles = heroTileSources
 const projects = [
   {
     id: '01',
+    mobileTitle: '宣发营销',
     type: 'BRAND CAMPAIGN / 2026',
     title: '小米影视VIP 宣发与重点营销',
     desc: '从新媒体宣发到春节、618 大促，建立多渠道整合视觉。',
@@ -45,6 +53,7 @@ const projects = [
   },
   {
     id: '02',
+    mobileTitle: '动态视觉',
     type: 'MOTION / OTT + APP / 2025',
     title: '小米电视与手机 App 动态视觉',
     desc: '覆盖 OTT 活动入口、创意开机、动态开屏与浮层广告。',
@@ -54,6 +63,7 @@ const projects = [
   },
   {
     id: '03',
+    mobileTitle: 'Mihome IP',
     type: 'IP DESIGN / 2026',
     title: 'Mihome IP 形象与视觉体系',
     desc: '从形象设定到营销场景，打造可持续生长的品牌视觉资产。',
@@ -63,6 +73,7 @@ const projects = [
   },
   {
     id: '04',
+    mobileTitle: 'AI 工具',
     type: 'AI TOOL / FIGMA PLUGIN / 2026',
     title: 'AI 组件替换助手',
     desc: '将 Claude + Codex 的探索落成 Figma 插件，服务真实视觉生产。',
@@ -71,6 +82,14 @@ const projects = [
     className: 'project-card project-card--wide project-card--ai',
   },
 ]
+
+const caseIds = projects.map((project) => project.href.slice(1))
+
+function currentCaseId() {
+  if (typeof window === 'undefined') return caseIds[0]
+  const hash = decodeURIComponent(window.location.hash.slice(1))
+  return caseIds.includes(hash) ? hash : caseIds[0]
+}
 
 const capabilities = [
   { no: '01', en: 'VISUAL DESIGN', title: '视觉塑造', text: '从核心概念、主视觉到延展物料，建立一致且有记忆点的视觉语言。', href: '#case-vip' },
@@ -144,6 +163,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
   const [menuOpen, setMenuOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [isNavFloating, setIsNavFloating] = useState(false)
+  const [mobileCase, setMobileCase] = useState(currentCaseId)
   const glowRef = useRef(null)
   useReveal()
 
@@ -156,6 +176,28 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
     window.addEventListener('pointermove', moveGlow)
     return () => window.removeEventListener('pointermove', moveGlow)
   }, [])
+
+  useEffect(() => {
+    const syncCaseFromHash = () => {
+      const nextCase = currentCaseId()
+      setMobileCase(nextCase)
+      if (!caseIds.includes(decodeURIComponent(window.location.hash.slice(1)))) return
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => document.getElementById(nextCase)?.scrollIntoView())
+      })
+    }
+
+    window.addEventListener('hashchange', syncCaseFromHash)
+    return () => window.removeEventListener('hashchange', syncCaseFromHash)
+  }, [])
+
+  const selectMobileCase = (caseId) => {
+    setMobileCase(caseId)
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${caseId}`)
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => document.getElementById(caseId)?.scrollIntoView())
+    })
+  }
 
   useEffect(() => {
     const updateNavigation = () => {
@@ -211,7 +253,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
           <div className="hero-mosaic" aria-hidden="true">
             {heroTiles.map((tile, index) => (
               <figure className="hero-tile" key={`${tile}-${index}`} style={{ '--tile-image': `url(${tile})` }}>
-                <img src={tile} alt="" />
+                <img src={tile} alt="" loading="lazy" decoding="async" fetchPriority="low" />
               </figure>
             ))}
           </div>
@@ -288,6 +330,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
           <div className="frame">
             <div className="section-kicker section-kicker--light" data-reveal><span>02</span><p>SELECTED WORK / 2024—2026</p></div>
             <div className="work-heading" data-reveal><h2>关键工作<br /><em>产出。</em></h2><p>从营销视觉、IP 设计到动态与工具创新，<br />在不同屏幕与场景中让设计产生价值。</p></div>
+            <MediaViewHint />
             <div className="projects">
               {projects.map((project) => (
                 <article className={project.className} key={project.id} data-reveal>
@@ -307,7 +350,23 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
           </div>
         </section>
 
-        <section className="casebook" id="cases">
+        <section className="casebook" id="cases" data-mobile-case={mobileCase}>
+          <nav className="mobile-case-switcher" aria-label="手机端项目切换">
+            {projects.map((project) => {
+              const caseId = project.href.slice(1)
+              return (
+                <button
+                  className={mobileCase === caseId ? 'is-active' : ''}
+                  type="button"
+                  key={project.id}
+                  onClick={() => selectMobileCase(caseId)}
+                  aria-pressed={mobileCase === caseId}
+                >
+                  <span>{project.id}</span>{project.mobileTitle}
+                </button>
+              )
+            })}
+          </nav>
           {false && (
           <article className="case-story case-story--vip" id="case-vip">
             <div className="frame">
@@ -316,6 +375,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米影视VIP<br /><em>宣发与重点营销</em></h2>
                 <p>从微信公众号、小红书、微博日常宣发，到春节和 618 大促，统一品牌与营销表达。</p>
               </header>
+              <MediaViewHint long />
 
               <figure className="case-cover real-cover" data-reveal>
                 <img src="/portfolio/vip-cover.webp" alt="小米影视VIP 周末活动电视端资源位" loading="lazy" />
@@ -420,6 +480,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米影视VIP<br /><em>增值运营设计</em></h2>
                 <p>围绕 618 与五一档期，完成从内容介绍、公众号长图到小红书和动态 Banner 的连续传播，让每次内容更新拥有清晰、统一的观看入口。</p>
               </header>
+              <MediaViewHint long />
 
               <div className="case-facts vip-promo-facts" data-reveal>
                 <div><span>工作内容</span><p>内容选题、视觉主张、长图排版与多渠道延展。</p></div>
@@ -555,6 +616,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>Mihome IP<br /><em>形象与视觉体系</em></h2>
                 <p>{enhancedContent ? '以“三代同屏、六类内容场景”为结构，建立 Mihome Family 家庭角色体系，让电视内容服务拥有更亲切、更可持续的品牌人格，也代表用户可以获得更沉浸式的内容体验。' : '以“三代同屏、六类内容场景”为结构，建立 Mihome Family 家庭角色体系，让电视内容服务拥有更亲切、更可持续的品牌人格。'}</p>
               </header>
+              <MediaViewHint long />
 
               <figure className="case-cover case-cover--mihome real-cover" data-reveal><img src="/portfolio/mihome-cover.webp" alt="Mihome Family 家庭角色系统主视觉" loading="lazy" /><figcaption><span>MIHOME FAMILY / 2026 VERSION</span><p>Home begins in everyone’s own scene.</p></figcaption></figure>
 
@@ -644,6 +706,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>小米电视与 App<br /><em>活动动态视觉</em></h2>
                 <p>围绕大屏开机、手机开屏与资源位广告，以动态节奏、画面转场和视觉特效快速聚焦注意力，让品牌卖点在有限曝光时间内更直观地被理解和记住。</p>
               </header>
+              <MediaViewHint />
 
               <section className="motion-reel" data-reveal>
                 <section className="motion-terminal motion-terminal--tv">
@@ -755,6 +818,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 <h2>AI 工具化：让重复制作<br /><em>回到创意本身</em></h2>
                 <p>从设计稿中反复出现的找素材、对规格、换画框出发，将工作流收敛为「组件替换小助手」：在 Figma 内完成检索、定位与批量替换。</p>
               </header>
+              <MediaViewHint />
 
               <section className="ai-tool-board" data-reveal>
                 <div className="ai-tool-overview">
@@ -787,6 +851,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
 
           <section className="archive frame" data-reveal>
             <header className="archive-header"><div><span>VISUAL ARCHIVE</span><b>2025—2026</b></div><h2>更多视觉产出<br /><em>与日常实践。</em></h2><p>从电视端资源位、品牌动态到节日场景，以下均来自本轮筛选后的真实工作文件。</p></header>
+            <MediaViewHint long />
             <div className="archive-grid">
               {archiveItems.map((item, index) => {
                 const no = item.no || `A${String(index + 1).padStart(2, '0')}`

@@ -11,8 +11,12 @@ export default defineConfig({
       transform(code, id) {
         if (!/\.[cm]?[jt]sx?$/.test(id)) return null
 
-        const transformed = code.replace(
-          /(["'`])\/(portfolio|assets|hero|icons|logos)\//g,
+        const previewed = code.replace(
+          /(["'`])\/(portfolio|assets|hero)\/([^"'`?]+\.(?:png|jpe?g|webp|gif))/gi,
+          '$1/previews/$2/$3.webp',
+        )
+        const transformed = previewed.replace(
+          /(["'`])\/(portfolio|assets|hero|icons|logos|previews)\//g,
           '$1./$2/',
         )
 
