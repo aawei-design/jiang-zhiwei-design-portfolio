@@ -12,6 +12,12 @@ function withMediaVersion(src) {
   return `${src}${src.includes('?') ? '&' : '?'}v=${MEDIA_CACHE_VERSION}`
 }
 
+function posterFromSrc(src) {
+  if (typeof src !== 'string') return undefined
+  const match = src.split('?')[0].match(/\/portfolio\/motion\/([^/]+)\.mp4$/i)
+  return match ? `/portfolio/motion/posters/${match[1]}.jpg?v=${MEDIA_CACHE_VERSION}` : undefined
+}
+
 function useMedia(queries, values, defaultValue) {
   const get = () => {
     if (typeof window === 'undefined') return defaultValue
@@ -72,6 +78,7 @@ function LazyVideo({ src, title }) {
       ref={ref}
       className="masonry-media"
       src={isNear ? versionedSrc : undefined}
+      poster={posterFromSrc(src)}
       aria-label={title}
       muted
       loop

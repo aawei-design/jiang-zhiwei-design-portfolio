@@ -7,13 +7,20 @@ function withMediaVersion(src) {
   return `${src}${src.includes('?') ? '&' : '?'}v=${MEDIA_CACHE_VERSION}`
 }
 
+function posterFromSrc(src) {
+  if (typeof src !== 'string') return undefined
+  const match = src.split('?')[0].match(/\/portfolio\/motion\/([^/]+)\.mp4$/i)
+  return match ? `/portfolio/motion/posters/${match[1]}.jpg?v=${MEDIA_CACHE_VERSION}` : undefined
+}
+
 function enqueueVideoLoad(start) {
   start(() => {})
   return () => {}
 }
 
-export default function ReliableVideo({ src, enabled = false, className = '', autoPlay = true, ...props }) {
+export default function ReliableVideo({ src, enabled = false, className = '', autoPlay = true, poster, ...props }) {
   const versionedSrc = withMediaVersion(src)
+  const resolvedPoster = poster || posterFromSrc(src)
   const videoRef = useRef(null)
   const visibleRef = useRef(false)
   const requestedRef = useRef(false)
@@ -121,6 +128,7 @@ export default function ReliableVideo({ src, enabled = false, className = '', au
       ref={videoRef}
       className={`${className} reliable-video${isReady ? ' is-video-ready' : ''}`.trim()}
       src={shouldLoad ? versionedSrc : undefined}
+      poster={resolvedPoster}
       muted
       loop
       playsInline
