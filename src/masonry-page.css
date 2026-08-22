@@ -962,3 +962,32 @@
   margin: 14px 0 0 auto;
   backdrop-filter: blur(10px);
 }
+
+/* Keep both promotional banners in one clean column with independent layout boxes. */
+.masonry-effects-version .vip-promo-banner-pair {
+  position: relative;
+  isolation: isolate;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: none !important;
+  grid-auto-rows: auto;
+  align-items: start;
+}
+
+.masonry-effects-version .vip-promo-banner-pair figure {
+  position: relative;
+  inset: auto;
+  grid-column: 1;
+  width: 100%;
+  margin: 0;
+}
+
+.masonry-effects-version .vip-promo-banner-pair img,
+.masonry-effects-version .archive-item--banner img {
+  position: relative;
+  inset: auto;
+}
+
+.masonry-effects-version .archive-item--banner {
+  position: relative;
+  isolation: isolate;
+}
