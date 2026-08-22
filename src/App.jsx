@@ -569,8 +569,8 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                     <figure><img src="/portfolio/vip-promo-xhs-618-2.webp" alt="618 小红书剧集评分活动物料" loading="lazy" /><figcaption>小红书 / 内容互动</figcaption></figure>
                   </div>
                   <div className="vip-promo-banner-pair">
-                    <figure><img src="/portfolio/vip-promo-618-banner.webp" alt="618 第三阶段动态 Banner" loading="lazy" decoding="async" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
-                    <figure><img src="/portfolio/vip-promo-may-banner.webp" alt="五一第三阶段动态 Banner" loading="lazy" decoding="async" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
+                    <figure><img src="/portfolio/vip-promo-618-banner.webp" alt="618 第三阶段动态 Banner" loading="eager" decoding="async" fetchPriority="high" /><figcaption><span>618 / MOTION BANNER</span><b>会员权益动态提醒</b></figcaption></figure>
+                    <figure><img src="/portfolio/vip-promo-may-banner.webp" alt="五一第三阶段动态 Banner" loading="eager" decoding="async" fetchPriority="high" /><figcaption><span>五一 / MOTION BANNER</span><b>假期看片活动入口</b></figcaption></figure>
                   </div>
                 </div>
               </section>
@@ -755,7 +755,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
 
                 <section className="motion-terminal motion-terminal--mobile">
                   <header><span>2.2 / 手机端开屏</span><h4>手机端品牌开屏</h4><p>通过三维制作、环境特效与开屏动效强化画面冲击，在更小的屏幕中快速建立品牌记忆，并将用户注意力引向核心行动。</p></header>
-                  <MediaViewHint kind="video" className="project-media-hint--before-media project-media-hint--motion-mobile" />
                   <div className="motion-mobile-grid">
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/mobile-airchina.mp4" autoPlay preload="metadata" /><figcaption><span>国航开屏</span><b>品牌首帧</b></figcaption></figure>
                     <figure><ReliableVideo enabled={enhancedContent} src="/portfolio/motion/mobile-rain.mp4" autoPlay preload="metadata" /><figcaption><span>下雨动画</span><b>环境状态动效</b></figcaption></figure>
@@ -766,7 +765,6 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
 
                 <section className="motion-terminal motion-terminal--campaign">
                   <header><span>2.3 / CAMPAIGN MOTION</span><h4>活动资源位动态图</h4><p>把首页背景中使用的活动素材保留为动态展示，在案例中补充其在不同资源位中的节奏与信息层级。</p></header>
-                  <MediaViewHint className="project-media-hint--before-media" />
                   <div className="motion-campaign-grid">
                     <figure><img src="/hero/618-stage2.webp" alt="618 第二阶段资源位动态图" loading="lazy" /><figcaption>618 / 第二阶段</figcaption></figure>
                     <figure><img src="/hero/618-stage3.webp" alt="618 第三阶段资源位动态图" loading="lazy" /><figcaption>618 / 第三阶段</figcaption></figure>
@@ -777,6 +775,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                     <figure><img src="/hero/618-benefit.webp" alt="618 会员权益动态图" loading="lazy" /><figcaption>618 / 会员权益</figcaption></figure>
                     <figure><img src="/hero/weekend-purple.webp" alt="周末影院紫色资源位动态图" loading="lazy" /><figcaption>周末影院 / 主题延展</figcaption></figure>
                   </div>
+                  <MediaViewHint className="project-media-hint--campaign-grid" />
                 </section>
               </section>
 
@@ -895,7 +894,7 @@ function App({ enhancedNav = false, enhancedProfile = false, enhancedContent = f
                 const format = `${item.type === '动态 Banner' ? 'archive-item--banner' : (item.long ? 'archive-item--heat' : (item.type === '长图宣发' || item.type === '社媒视觉' ? 'archive-item--portrait' : ''))}${item.long ? ' archive-item--long-scroll' : ''}${item.media === 'video' ? ' archive-item--video' : ''}${item.type === '动态练习' ? ' archive-item--practice' : ''}`
                 return (
                 <article className={`archive-item ${format}`} key={asset}>
-                  <div className="archive-art archive-art--real">{item.media === 'video' ? <ReliableVideo enabled={enhancedContent} src={asset} aria-label={title} autoPlay preload="metadata" /> : <img src={asset} alt={title} loading="lazy" />}{!enhancedContent && <strong>{no}</strong>}</div>
+                  <div className="archive-art archive-art--real">{item.media === 'video' ? <ReliableVideo enabled={enhancedContent} src={asset} aria-label={title} autoPlay preload="metadata" /> : <img src={asset} alt={title} loading={item.type === '动态 Banner' ? 'eager' : 'lazy'} decoding="async" />}{!enhancedContent && <strong>{no}</strong>}</div>
                   <div><span>{enhancedContent ? item.type : `${no} / ${item.type}`}</span><h3>{title}</h3></div>
                 </article>
                 )
