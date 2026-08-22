@@ -938,3 +938,27 @@
 .masonry-effects-version .strength {
   padding-top: 88px;
 }
+
+/* Animated banners bypass the generic media entrance opacity so their previews never stay hidden. */
+.masonry-effects-version .vip-promo-banner-pair img,
+.masonry-effects-version .archive-item--banner .archive-art img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Annotation refinements from the published-page review. */
+.masonry-effects-version .vip-promo-result {
+  border-bottom: 0;
+}
+
+.masonry-effects-version .key-marketing-heading .project-media-hint--key-marketing {
+  transform: translateY(-12px);
+}
+
+.masonry-effects-version .motion-terminal--campaign .project-media-hint--campaign-grid {
+  position: static;
+  margin: 14px 0 0 auto;
+  backdrop-filter: blur(10px);
+}
