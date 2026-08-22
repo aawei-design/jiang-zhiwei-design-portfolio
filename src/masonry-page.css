@@ -1015,7 +1015,20 @@
 .masonry-effects-version .archive-item--banner .archive-art {
   box-sizing: border-box;
   width: 100%;
+  height: auto !important;
   min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1024 / 280;
+  border-radius: 9px;
+}
+
+.masonry-effects-version .archive-item--banner .archive-art img {
+  object-fit: contain;
+  border-radius: inherit;
+}
+
+.masonry-effects-version .archive-item--banner:hover .archive-art img {
+  transform: none;
 }
 
 .masonry-effects-version .archive-item--banner > div:last-child {
