@@ -18,6 +18,20 @@ h1, h2, h3, h4, strong, b { font-weight: 600; }
 p, small, span { font-weight: 400; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: #080808; }
+
+/*
+ * The portfolio is art-directed as one desktop canvas.  Keep that canvas intact
+ * on phones and tablets; the fixed viewport in masonry.html scales it to fit and
+ * the browser remains responsible for pinch zooming/panning.
+ */
+html.masonry-fixed-layout,
+html.masonry-fixed-layout body,
+body.masonry-effects-version,
+body.masonry-effects-version #root,
+body.masonry-effects-version .site {
+  width: 100%;
+  min-width: 1280px;
+}
 body, button, a { cursor: default; }
 a { color: inherit; text-decoration: none; cursor: pointer; }
 button { color: inherit; font: inherit; }
@@ -826,7 +840,7 @@ figure { margin: 0; }
 }
 
 /* Keep the four long-scroll cards together in tablet/compact PC previews too. */
-@media (min-width: 721px) and (max-width: 1050px) {
+@media (min-width: 2000px) and (max-width: 1050px) {
   #case-vip .vip-promo-long-stories { grid-template-columns: repeat(2,minmax(0,1fr)); }
   #case-vip .vip-promo-long-story { display: block; min-height: 0; }
   #case-vip .vip-promo-long-story figure { height: 440px; }

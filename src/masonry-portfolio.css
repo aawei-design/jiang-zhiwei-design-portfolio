@@ -7,12 +7,12 @@
 .masonry-filters button { padding: 9px 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: rgba(255,255,255,.55); background: transparent; font-size: 9px; letter-spacing: .1em; cursor: pointer; transition: color .2s ease, border-color .2s ease, background .2s ease; }
 .masonry-filters button:hover, .masonry-filters button.is-active { color: #111; border-color: #fff; background: #fff; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px) and (min-width: 2000px) {
   .masonry-intro { grid-template-columns: 1fr auto; gap: 18px; }
   .masonry-intro p { grid-column: 1 / -1; grid-row: 2; }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 520px) and (min-width: 2000px) {
   .masonry-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .masonry-filters::-webkit-scrollbar { display: none; }
   .masonry-filters button { flex: 0 0 auto; }

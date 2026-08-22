@@ -58,7 +58,7 @@
 .masonry-item-media footer span { color: rgba(255,255,255,.48); font-size: 9px; letter-spacing: .1em; }
 .masonry-play { position: absolute; z-index: 2; top: 15px; right: 15px; padding: 6px 9px; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; color: rgba(255,255,255,.78); background: rgba(0,0,0,.3); backdrop-filter: blur(10px); font-size: 8px; letter-spacing: .14em; }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) and (min-width: 2000px) {
   .masonry-item-wrapper { padding: 5px; }
   .masonry-item-media footer { right: 12px; bottom: 12px; left: 12px; }
   .masonry-item-media footer strong { font-size: 12px; }
