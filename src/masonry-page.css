@@ -1008,4 +1008,26 @@
 .masonry-effects-version .archive-item--banner {
   position: relative;
   isolation: isolate;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.masonry-effects-version .archive-item--banner .archive-art {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.masonry-effects-version .archive-item--banner > div:last-child {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.masonry-effects-version .archive-item--banner > div:last-child h3 {
+  min-width: 0;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-align: right;
 }
