@@ -26,11 +26,17 @@ body { margin: 0; min-width: 320px; background: #080808; }
  */
 html.masonry-fixed-layout,
 html.masonry-fixed-layout body,
-body.masonry-effects-version,
+body.masonry-effects-version {
+  width: 100%;
+  min-width: 1280px;
+}
+
 body.masonry-effects-version #root,
 body.masonry-effects-version .site {
   width: 100%;
   min-width: 1280px;
+  max-width: 1920px;
+  margin-inline: auto;
 }
 body, button, a { cursor: default; }
 a { color: inherit; text-decoration: none; cursor: pointer; }

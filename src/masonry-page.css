@@ -110,6 +110,24 @@
   background: rgba(5,5,8,.14);
 }
 
+/*
+ * Full-screen sections must follow the artboard, not the browser's enlarged
+ * logical height. A fixed-width mobile viewport and desktop Ctrl zoom can make
+ * 100svh several times taller than the design; the 16:9 cap keeps imagery,
+ * typography and vertical rhythm scaling as one composition.
+ */
+.masonry-effects-version {
+  --portfolio-stage-height: min(100svh, 56.25vw, 1080px);
+}
+
+.masonry-effects-version .hero,
+.masonry-effects-version .hero-content,
+.masonry-effects-version .work,
+.masonry-effects-version .contact,
+.masonry-effects-version .contact-inner {
+  min-height: var(--portfolio-stage-height);
+}
+
 .masonry-effects-version .hero,
 .masonry-effects-version .about,
 .masonry-effects-version .work,
